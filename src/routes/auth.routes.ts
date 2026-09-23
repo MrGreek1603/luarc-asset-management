@@ -61,19 +61,22 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
     loginController,
   );
 
-  app.get(
+app.get(
   "/me",
   {
     preHandler: authenticate,
     schema: {
       tags: ["Authentication"],
-      summary: "Get current authenticated user",
+      summary: "Get authenticated user",
       security: [{ bearerAuth: [] }],
     },
   },
   async (request) => {
     return {
-      user: request.user,
+      user: {
+        id: request.user.userId,
+        email: request.user.email,
+      },
     };
   },
 );
