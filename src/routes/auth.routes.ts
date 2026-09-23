@@ -1,4 +1,5 @@
 import type { FastifyPluginAsync } from "fastify";
+import { authenticate } from "../middleware/auth.middleware.js";
 
 import {
   loginController,
@@ -59,4 +60,21 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
     },
     loginController,
   );
+
+  app.get(
+  "/me",
+  {
+    preHandler: authenticate,
+    schema: {
+      tags: ["Authentication"],
+      summary: "Get current authenticated user",
+      security: [{ bearerAuth: [] }],
+    },
+  },
+  async (request) => {
+    return {
+      user: request.user,
+    };
+  },
+);
 };
