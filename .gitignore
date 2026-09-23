@@ -11,3 +11,8 @@ coverage/
 .windsurf/
 
 .DS_Store
+/src/generated/prisma
+
+.agents
+.claude
+.windsurf
