@@ -6,6 +6,7 @@ import swaggerUi from "@fastify/swagger-ui";
 import { env } from "./config/env.js";
 import { AppError } from "./errors/app-error.js";
 import { healthRoutes } from "./routes/health.routes.js";
+import { authRoutes } from "./routes/auth.routes.js";
 
 export const app = Fastify({
   logger: true,
@@ -97,4 +98,7 @@ app.register(healthRoutes);
 
 app.register(swaggerUi, {
   routePrefix: "/docs",
+});
+app.register(authRoutes, {
+    prefix:"/auth",
 });
