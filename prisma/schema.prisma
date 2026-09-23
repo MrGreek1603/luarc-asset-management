@@ -11,3 +11,54 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum AssetStatus {
+  AVAILABLE
+  CLAIMED
+  EXPIRED
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  passwordHash  String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  claims        Claim[]
+  claimedAssets Asset[]
+}
+
+model Asset {
+  id           Int         @id @default(autoincrement())
+  code         String      @unique
+  title        String
+  valueInCents Int
+  status       AssetStatus @default(AVAILABLE)
+
+  claimedById Int?
+  claimedAt   DateTime?
+  version     Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  claimedBy User?   @relation(fields: [claimedById], references: [id])
+  claims    Claim[]
+
+  @@index([status, createdAt])
+  @@index([createdAt])
+  @@index([claimedById])
+}
+
+model Claim {
+  id        Int      @id @default(autoincrement())
+  assetId   Int      @unique
+  userId    Int
+  claimedAt DateTime @default(now())
+
+  asset Asset @relation(fields: [assetId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@index([userId, claimedAt])
+}
