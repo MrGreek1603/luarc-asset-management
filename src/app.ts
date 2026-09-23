@@ -8,6 +8,7 @@ import { AppError } from "./errors/app-error.js";
 import { healthRoutes } from "./routes/health.routes.js";
 import { authRoutes } from "./routes/auth.routes.js";
 import { assetRoutes } from "./routes/asset.routes.js";
+import { claimRoutes } from "./routes/claim.routes.js";
 
 export const app = Fastify({
   logger: true,
@@ -106,3 +107,4 @@ app.register(authRoutes, {
 app.register(assetRoutes, {
   prefix: "/assets",
 });
+app.register(claimRoutes);
