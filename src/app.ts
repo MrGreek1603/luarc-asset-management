@@ -89,10 +89,7 @@ app.register(swagger, {
         name: "Claims",
         description: "Asset claiming endpoints",
       },
-      {
-        name: "Users",
-        description: "User endpoints",
-      },
+  
     ],
     components: {
       securitySchemes: {
