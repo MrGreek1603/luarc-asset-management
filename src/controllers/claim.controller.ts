@@ -1,6 +1,18 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { claimAssetParamsSchema } from "../schemas/claim.schema.js";
-import { claimAsset } from "../services/claim.service.js";
+import { claimAsset,  getUserClaims, } from "../services/claim.service.js";
+
+
+export const getUserClaimsController = async (
+  request: FastifyRequest,
+  _reply: FastifyReply,
+) => {
+  const claims = await getUserClaims(request.user.userId);
+
+  return {
+    claims,
+  };
+};
 
 export const claimAssetController = async (
   request: FastifyRequest,

@@ -1,5 +1,8 @@
 import type { FastifyPluginAsync } from "fastify";
-import { claimAssetController } from "../controllers/claim.controller.js";
+import {
+  claimAssetController,
+  getUserClaimsController,
+} from "../controllers/claim.controller.js";
 import { authenticate } from "../middleware/auth.middleware.js";
 
 export const claimRoutes: FastifyPluginAsync = async (app) => {
@@ -30,5 +33,24 @@ export const claimRoutes: FastifyPluginAsync = async (app) => {
       },
     },
     claimAssetController,
+  );
+
+  app.get(
+    "/me/claims",
+    {
+      preHandler: authenticate,
+      schema: {
+        tags: ["Claims"],
+        summary: "Get my claim history",
+        description:
+          "Returns the authenticated user's claim history with asset details.",
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+      },
+    },
+    getUserClaimsController,
   );
 };

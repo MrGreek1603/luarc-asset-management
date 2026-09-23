@@ -65,3 +65,24 @@ export const claimAsset = async (input: {
     };
   });
 };
+export const getUserClaims = async (userId: number) => {
+  return prisma.claim.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      asset: {
+        select: {
+          id: true,
+          code: true,
+          title: true,
+          valueInCents: true,
+          status: true,
+        },
+      },
+    },
+    orderBy: {
+      claimedAt: "desc",
+    },
+  });
+};
