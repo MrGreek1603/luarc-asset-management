@@ -15,7 +15,17 @@ export const app = Fastify({
 });
 
 app.setErrorHandler((error, request, reply) => {
+  if (error instanceof AppError) {
+  request.log.warn(
+    {
+      code: error.code,
+      statusCode: error.statusCode,
+    },
+    error.message,
+  );
+} else {
   request.log.error(error);
+}
 
   const fastifyError = error as {
     code?: string;
